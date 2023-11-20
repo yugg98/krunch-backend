@@ -8,4 +8,12 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       name,email,password
     });
     sendToken(user, 201, res);
+});
+
+exports.loginUser = catchAsyncErrors(async (req, res, next) => {
+  const {email,password} = req.body;
+  const user = await userdb.find({
+    email,password
   });
+  sendToken(user, 201, res);
+});

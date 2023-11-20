@@ -5,7 +5,8 @@ const product = new mongoose.Schema({
     type:String,
   },
   image:{
-    type:String,
+    public_id:String,
+    url:String
   },
   location:{
     type:String,
@@ -16,8 +17,11 @@ const product = new mongoose.Schema({
   category:{
     type:String,
     enum:["dish","product","mall"]
+  },
+  createdAt:{
+    type:Date,
+    default:Date.now()
   }
-  
 });
 
 module.exports = mongoose.model("product", product);
