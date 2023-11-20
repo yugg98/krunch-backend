@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 
 const errorMiddleware = require("./middleware/error.js");
-app.use(cors())
 app.use(express.json());
 
 // Route Imports
