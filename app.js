@@ -15,8 +15,10 @@ app.use(express.json());
 
 // Route Imports
 const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
 
 app.use("/api/v1", userRoute);
+app.use("/api/v1", productRoute);
 
 app.use(express.static(path.join(__dirname, "../client/out")));
 

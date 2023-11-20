@@ -1,8 +1,7 @@
 const productdb = require("../models/product.model");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
-const sendToken = require("../utils/sendToken");
 
-exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
     folder: "productimage",
   });
