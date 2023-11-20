@@ -14,9 +14,9 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
 app.use(express.json());
 
 // Route Imports
-const userRoute = require("./routes/userRoute");
+// const userRoute = require("./routes/userRoute");
 
-app.use("/api/v1", userRoute);
+// app.use("/api/v1", userRoute);
 
 app.use(express.static(path.join(__dirname, "../client/out")));
 
