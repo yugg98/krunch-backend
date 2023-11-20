@@ -1,16 +1,8 @@
 const express = require("express");
 const app = express();
-const path = require("path");
-var cors = require('cors')
 
 const errorMiddleware = require("./middleware/error.js");
 app.use(cors())
-
-// Config
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({ path: "backend/config/config.env" });
-}
-
 app.use(express.json());
 
 // Route Imports
