@@ -9,7 +9,6 @@ app.use(express.json());
 
 // app.use("/api/v1", userRoute);
 
-app.use(express.static(path.join(__dirname, "../client/out")));
 
 app.get('*',(req,res)=>{
   res.status(200).json({
@@ -17,9 +16,7 @@ app.get('*',(req,res)=>{
   })
 })
 
-app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// Middleware for Errors
 app.use(errorMiddleware);
 
 module.exports = app;
