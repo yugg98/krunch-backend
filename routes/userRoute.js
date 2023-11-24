@@ -1,12 +1,22 @@
 const express = require("express");
-const { registerUser } = require("../controllers/user.controller");
+const { 
+  registerUser, 
+  resendOTP, 
+  verifyOTP 
+} = require("../controllers/user.controller");
 
 const router = express.Router();
 
-router.route('/user/register').post(registerUser)
-// router.route('/user/get').post(createUser)
-// router.route('/user/create').post(createUser)
-// router.route('/user/create').post(createUser)
+// User registration route
+router.post('/user/register', registerUser);
 
+// Route to resend OTP
+router.post('/user/resend-otp', resendOTP);
+
+// Route to verify OTP
+router.post('/user/verify-otp', verifyOTP);
+
+// You can add other user-related routes here
+// router.post('/user/some-action', someControllerFunction);
 
 module.exports = router;
