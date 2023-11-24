@@ -1,6 +1,12 @@
 const app = require("./app");
 const connectDatabase = require("./config/database.js");
-
+const cloudinary = require('cloudinary')
+          
+cloudinary.config({ 
+  cloud_name: 'yug', 
+  api_key: '159366218959158', 
+  api_secret: '_wzwti2vjFfXkEDQGLxGoKJVhfI' 
+});
 // Handling Uncaught Exception
 process.on("uncaughtException", (err) => {
   console.log(`Error: ${err.message}`);

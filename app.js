@@ -11,14 +11,15 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "backend/config/config.env" });
 }
 
-app.use(express.json());
-
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb'}));
 // Route Imports
 const userRoute = require("./routes/userRoute");
 const productRoute = require("./routes/productRoute");
 
 app.use("/api/v1", userRoute);
 app.use("/api/v1", productRoute);
+
 
 app.use(express.static(path.join(__dirname, "../client/out")));
 

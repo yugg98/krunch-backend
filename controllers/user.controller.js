@@ -3,9 +3,9 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require("../utils/sendToken");
 
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-    const {name,email,password} = req.body;
+    const {email} = req.body;
     const user = await userdb.create({
-      name,email,password
+      email
     });
     sendToken(user, 201, res);
 });
