@@ -20,7 +20,6 @@ exports.registerUser = catchAsyncErrors(async (req, res) => {
   } else {
     try {
       const newUser = await userdb.create({ email });
-      await handleOtpProcess(email);
       res.status(201).json({ userexist: false, user: newUser });
     } catch (error) {
       console.error("Registration Error: ", error);
@@ -50,6 +49,7 @@ exports.resendOTP = catchAsyncErrors(async (req, res) => {
 // Verify OTP
 exports.verifyOTP = catchAsyncErrors(async (req, res) => {
   const { email, otp } = req.body;
+  console.log(email,otp)
   const user = await userdb.findOne({ email });
 
   if (!user) {

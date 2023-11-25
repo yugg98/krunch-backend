@@ -16,7 +16,14 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please add a valid email address']
   },
-
+  googleId: {
+    type: String,
+    unique: true,
+  },
+  facebookId: {
+    type: String,
+    unique: true,
+  },
   otp: String,
   otpExpiry: Date,
 });
@@ -26,8 +33,7 @@ const userSchema = new mongoose.Schema({
 
 // JWT TOKEN
 userSchema.methods.getJWTToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE
+  return jwt.sign({ id: this._id }, "hjfenjnefnjnefnjnefvkjnfevnknefvnkjevfk", {
   });
 };
 

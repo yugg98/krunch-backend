@@ -1,0 +1,13 @@
+[
+    { "id": 1, "name": "Grocery" },
+    { "id": 2, "name": "Food" },
+    { "id": 3, "name": "Electronics" },
+    { "id": 4, "name": "Clothing" },
+    { "id": 5, "name": "Books" },
+    { "id": 6, "name": "Home" },
+    { "id": 7, "name": "Beauty" },
+    { "id": 8, "name": "Toys" },
+    { "id": 9, "name": "Sports" },
+    { "id": 10, "name": "Automotive" }
+  ]
+  

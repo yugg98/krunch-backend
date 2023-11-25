@@ -8,8 +8,8 @@ exports.isAuthenticated = async (req, res, next) => {
   if (!token) {
     return res.status(401).json({ success: false, message: "Please login to access this resource" });
   }
-
-  const decodedData = jwt.verify(token, process.env.JWT_SECRET);
+  console.log(token)
+  const decodedData = jwt.verify(token, "hjfenjnefnjnefnjnefvkjnfevnknefvnkjevfk");
   req.user = await User.findById(decodedData.id);
 
   next();
