@@ -1,7 +1,7 @@
 [
-    { "id": 1, "name": "Grocery" },
-    { "id": 2, "name": "Food" },
-    { "id": 3, "name": "Electronics" },
+    { "id": 1, "name": "mall" },
+    { "id": 2, "name": "product" },
+    { "id": 3, "name": "dish" },
     { "id": 4, "name": "Clothing" },
     { "id": 5, "name": "Books" },
     { "id": 6, "name": "Home" },

@@ -7,6 +7,10 @@ const productSchema = new mongoose.Schema({
     trim: true, // Removes whitespace from both ends of a string
     maxlength: [100, 'Product name cannot exceed 100 characters'] // Maximum length
   },
+  user_id:{
+    type:String,
+    required:true
+  },
   image: {
     public_id: {
       type: String,

@@ -36,9 +36,11 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     folder: "productimage",
     quality: 80,
   });
-  const { name, location, liked, category } = req.body;
+  const { name, location, liked, category,user } = req.body;
+  console.log(req.body)
   const product = await productdb.create({
     name,
+    user_id:user._id,
     location,
     liked,
     image: {
