@@ -8,7 +8,7 @@ exports.getProducts = catchAsyncErrors(async (req, res, next) => {
     success: true,
     count: products.length,
     products,
-    categories:categories
+    categories: categories,
   });
 });
 
@@ -32,15 +32,36 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, categories });
 });
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
-    folder: "productimage",
-    quality: 80,
-  });
-  const { name, location, liked, category,user } = req.body;
-  console.log(req.body)
+  let myCloud;
+
+  try {
+      if (req.body.image) {
+          // Convert Base64 to buffer
+          const buffer = Buffer.from(req.body.image, 'base64');
+          
+          // Create a new promise to handle the upload stream
+          myCloud = await new Promise((resolve, reject) => {
+              let uploadStream = cloudinary.v2.uploader.upload_stream({ folder: "productimage", quality: 80 }, (error, result) => {
+                  if (error) {
+                      reject(error);
+                  } else {
+                      resolve(result);
+                  }
+              });
+
+              uploadStream.end(buffer);
+          });
+      }
+  } catch (error) {
+      console.log(error);
+      return next(error);
+  }
+
+  const { name, location, liked, category } = req.body;
+  console.log(myCloud.public_id,myCloud.secure_url,name,location,liked,category);
   const product = await productdb.create({
     name,
-    user_id:user._id,
+    user_id: req.user._id,
     location,
     liked,
     image: {
@@ -49,7 +70,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     },
     category,
   });
-  console.log(product)
+  console.log(product,"hello");
   res.status(201).json({
     success: true,
     message: "Your Product is created",
