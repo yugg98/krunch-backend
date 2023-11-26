@@ -2,13 +2,16 @@ const productdb = require("../models/product.model");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const cloudinary = require("cloudinary");
 const categories = require("../utils/category.json");
+const jwt = require('jsonwebtoken');
+const userModel = require("../models/user.model");
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await productdb.find();
+  console.log(req.user);
+  const products = await productdb.find({ user_id: req.user._id });
   res.status(200).json({
     success: true,
     count: products.length,
     products,
-    categories:categories
+    categories: categories,
   });
 });
 
@@ -32,15 +35,15 @@ exports.getCategories = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ success: true, categories });
 });
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
-    folder: "productimage",
-    quality: 80,
-  });
-  const { name, location, liked, category,user } = req.body;
-  console.log(req.body)
+  const decodedData = jwt.verify(req.body.token, "hjfenjnefnjnefnjnefvkjnfevnknefvnkjevfk");
+  req.user = await userModel.findById(decodedData.id);
+  console.log(req)
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.image)
+
+  const { name, location, liked, category } = req.body;
   const product = await productdb.create({
     name,
-    user_id:user._id,
+    user_id: req.user._id,
     location,
     liked,
     image: {
@@ -49,7 +52,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     },
     category,
   });
-  console.log(product)
+  console.log(product);
   res.status(201).json({
     success: true,
     message: "Your Product is created",
