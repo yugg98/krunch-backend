@@ -28,6 +28,44 @@ exports.registerUser = catchAsyncErrors(async (req, res) => {
   }
 });
 
+const client = new OAuth2Client("668217070920-5sl8ehi20uqruvqgbf797r2big80c30k.apps.googleusercontent.com");
+
+
+exports.registerUserGoogle = catchAsyncErrors(async (req, res) => {
+  const { token } = req.body; // Token received from the client (front-end)
+
+  // Verify the Google token
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience:"668217070920-5sl8ehi20uqruvqgbf797r2big80c30k.apps.googleusercontent.com",
+  });
+
+  const { name, email } = ticket.getPayload();
+
+  // Check if the user already exists in your database
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    // If user does not exist, create a new user
+    user = new userdb({
+      name,
+      email,
+    });
+    await user.save();
+  }
+
+  // Here, implement the logic to create a JWT token or any other token for the user
+  // You can use the user's id to generate the token
+  // ...
+
+  // Return response
+  res.status(200).json({
+    success: true,
+    message: 'User authenticated and registered successfully',
+    user,
+    // token, // Include the token in the response if you've created one
+  });
+});
 // Resend OTP
 exports.resendOTP = catchAsyncErrors(async (req, res) => {
   const { email } = req.body;
