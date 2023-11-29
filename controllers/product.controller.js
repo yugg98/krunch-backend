@@ -35,34 +35,38 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   let myCloud;
 
   try {
-      if (req.body.image) {
-          // Convert Base64 to buffer
-          const buffer = Buffer.from(req.body.image, 'base64');
-          
-          // Create a new promise to handle the upload stream
-          myCloud = await new Promise((resolve, reject) => {
-              let uploadStream = cloudinary.v2.uploader.upload_stream({ folder: "productimage", quality: 80 }, (error, result) => {
-                  if (error) {
-                      reject(error);
-                  } else {
-                      resolve(result);
-                  }
-              });
+    if (req.body.image) {
+      // Convert Base64 to buffer
+      const buffer = Buffer.from(req.body.image, "base64");
 
-              uploadStream.end(buffer);
-          });
-      }
+      // Create a new promise to handle the upload stream
+      myCloud = await new Promise((resolve, reject) => {
+        let uploadStream = cloudinary.v2.uploader.upload_stream(
+          { folder: "productimage", quality: 80 },
+          (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          }
+        );
+
+        uploadStream.end(buffer);
+      });
+    }
   } catch (error) {
-      console.log(error);
-      return next(error);
+    console.log(error);
+    return next(error);
   }
 
-  const { name, location, liked, category } = req.body;
-  console.log(myCloud.public_id,myCloud.secure_url,name,location,liked,category);
+  const { name, liked, category, location } = req.body;
+  console.log(location);
   const product = await productdb.create({
     name,
     user_id: req.user._id,
-    location,
+    latitude: location.latitude,
+    longitude: location.longitude,
     liked,
     image: {
       public_id: myCloud.public_id,
@@ -70,7 +74,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     },
     category,
   });
-  console.log(product,"hello");
+  console.log(product, "hello");
   res.status(201).json({
     success: true,
     message: "Your Product is created",

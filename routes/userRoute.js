@@ -3,8 +3,10 @@ const {
   registerUser, 
   resendOTP, 
   verifyOTP,
-  registerUserGoogle
+  registerUserGoogle,
+  addName
 } = require("../controllers/user.controller");
+const { isAuthenticated } = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -12,6 +14,7 @@ const router = express.Router();
 router.post('/user/register', registerUser);
 router.post('/user/registerGoogle', registerUserGoogle);
 
+router.post('/user/addname',isAuthenticated ,addName);
 
 // Route to resend OTP
 router.post('/user/resend-otp', resendOTP);
