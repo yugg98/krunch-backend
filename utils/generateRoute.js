@@ -1,6 +1,7 @@
 const { Resend } = require("resend");
 const resend = new Resend("re_Ht2Qj2iJ_12uwe5DTdXXv8gJvDgbMoX4b");
 const userdb = require("../models/user.model");
+const ErrorHandler = require("./errorHander");
 
 const generateOTP = (length = 4) => {
   let otp = "";
@@ -9,7 +10,7 @@ const generateOTP = (length = 4) => {
   }
   return otp;
 };
-exports.handleOtpProcess = async (email) => {
+exports.handleOtpProcess = async (email,res) => {
   const user = await userdb.findOne({ email });
 
   // Calculate the next valid request time dynamically
@@ -17,7 +18,7 @@ exports.handleOtpProcess = async (email) => {
 
   // Check if the current time is less than 2 minutes after the otpExpiry
   if (nextValidRequestTime && new Date() < nextValidRequestTime) {
-    throw new Error('Cannot send OTP yet. Please wait.');
+     res.status(400)
   }
 
   const otp = await generateOTP();
@@ -31,8 +32,6 @@ exports.handleOtpProcess = async (email) => {
     subject: "Your One-Time Password",
     html: `<strong>Hello! Your OTP is: ${otp}</strong>`,
   });
-  console.log(otp);
-
   // Update the user record with the new otp and otpExpiry
   await userdb.updateOne({ email }, { otp, otpExpiry });
 };

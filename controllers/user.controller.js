@@ -12,7 +12,7 @@ exports.registerUser = catchAsyncErrors(async (req, res) => {
 
   if (user) {
     try {
-      await handleOtpProcess(email);
+      await handleOtpProcess(email,res);
       res.status(200).json({ userexist: true, user });
     } catch (error) {
       console.error("Registration Error: ", error);
@@ -84,7 +84,7 @@ exports.resendOTP = catchAsyncErrors(async (req, res) => {
   }
 
   try {
-    await handleOtpProcess(email);
+    await handleOtpProcess(email,res);
     res.status(200).json({ message: "OTP has been resent" });
   } catch (error) {
     console.error("OTP Resend Error: ", error);
