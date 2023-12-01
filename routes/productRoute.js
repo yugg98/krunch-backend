@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/product.controller");
 const { isAuthenticated } = require("../middleware/auth");
-router.get("/products", productController.getProducts);
+router.post("/products",isAuthenticated, productController.getProducts);
 router.get("/product/:id", productController.getProduct);
 
 // Apply the isAuthenticated middleware to routes that require user validation

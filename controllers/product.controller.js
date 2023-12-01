@@ -2,8 +2,9 @@ const productdb = require("../models/product.model");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const cloudinary = require("cloudinary");
 const categories = require("../utils/category.json");
+
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await productdb.find();
+  const products = await productdb.find({ user_id: req.user._id });
   res.status(200).json({
     success: true,
     count: products.length,
