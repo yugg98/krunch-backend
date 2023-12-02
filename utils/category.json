@@ -1,10 +1,10 @@
 [
-    { "id": 1, "name": "Food" },
-    { "id": 2, "name": "Groceries" },
-    { "id": 3, "name": "Beverages" },
-    { "id": 4, "name": "Personal Care" },
-    { "id": 5, "name": "Home Goods" },
-    { "id": 6, "name": "Apparel" },
-    { "id": 7, "name": "General" }
+    { "key": 1, "value": "Food" },
+    { "key": 2, "value": "Groceries" },
+    { "key": 3, "value": "Beverages" },
+    { "key": 4, "value": "Personal Care" },
+    { "key": 5, "value": "Home Goods" },
+    { "key": 6, "value": "Apparel" },
+    { "key": 7, "value": "General" }
   ]
   
