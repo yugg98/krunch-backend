@@ -30,11 +30,9 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     required: [true, "Category is required"],
-    enum: {
-      values: ["dish", "product", "mall"],
-      message: "{VALUE} is not a valid category", // Custom error message for enum validation
-    },
+   
   },
+  description:String,
   createdAt: {
     type: Date,
     default: Date.now, // Automatically sets the date of creation

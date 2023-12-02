@@ -61,8 +61,8 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     return next(error);
   }
 
-  const { name, liked, category, location } = req.body;
-  console.log(location);
+  const { name, liked, category, location,locationname } = req.body;
+  console.log(name, liked, category, location,locationname);
   const product = await productdb.create({
     name,
     user_id: req.user._id,
@@ -74,6 +74,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
       url: myCloud.secure_url,
     },
     category,
+    locationname:locationname
   });
   console.log(product, "hello");
   res.status(201).json({
