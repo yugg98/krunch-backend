@@ -85,7 +85,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-exports.createProductByQr = catchAsyncErrors(async (req, res, next) => {
+exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
   await request.post(
     {
       uri: "https://api.upcitemdb.com/prod/trial/lookup",
@@ -104,7 +104,7 @@ exports.createProductByQr = catchAsyncErrors(async (req, res, next) => {
       res.status(201).json({
         success: true,
         message: "Your Product is created",
-        body:JSON.parse(body),
+        body:JSON.parse(body).items[0],
       });
     }
   );
