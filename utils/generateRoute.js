@@ -24,14 +24,15 @@ exports.handleOtpProcess = async (email,res) => {
   const otp = await generateOTP();
   const otpExpiry = new Date(Date.now() + 30 * 60000); // 30 minutes expiry
 
-  console.log(otp);
+  console.log(otp,email);
 
-  await resend.emails.send({
+  const response = await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
     to: [email],
     subject: "Your One-Time Password",
     html: `<strong>Hello! Your OTP is: ${otp}</strong>`,
   });
+  console.log(response)
   // Update the user record with the new otp and otpExpiry
   await userdb.updateOne({ email }, { otp, otpExpiry });
 };

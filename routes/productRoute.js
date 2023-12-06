@@ -7,6 +7,7 @@ router.get("/product/category", productController.getCategories);
 
 // Apply the isAuthenticated middleware to routes that require user validation
 router.post("/product/create", isAuthenticated, productController.createProduct);
+router.post("/product/create-by-qr", productController.createProductByQr);
 router.put("/product/update/:id", isAuthenticated, productController.updateProduct);
 router.delete("/product/delete/:id", isAuthenticated, productController.deleteProduct);
 

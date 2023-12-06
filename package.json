@@ -12,6 +12,7 @@
     "moment": "^2.29.4",
     "mongoose": "^7.3.2",
     "nodemon": "^3.0.1",
+    "request": "^2.88.2",
     "resend": "^2.0.0"
   },
   "scripts": {

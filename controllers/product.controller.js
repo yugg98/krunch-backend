@@ -2,6 +2,7 @@ const productdb = require("../models/product.model");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const cloudinary = require("cloudinary");
 const categories = require("../utils/category.json");
+const request = require("request");
 
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
   const products = await productdb.find({ user_id: req.user._id });
@@ -61,8 +62,8 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     return next(error);
   }
 
-  const { name, liked, category, location,locationname } = req.body;
-  console.log(name, liked, category, location,locationname);
+  const { name, liked, category, location, locationname } = req.body;
+  console.log(name, liked, category, location, locationname);
   const product = await productdb.create({
     name,
     user_id: req.user._id,
@@ -74,7 +75,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
       url: myCloud.secure_url,
     },
     category,
-    locationname:locationname
+    locationname: locationname,
   });
   console.log(product, "hello");
   res.status(201).json({
@@ -82,6 +83,31 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     message: "Your Product is created",
     product,
   });
+});
+
+exports.createProductByQr = catchAsyncErrors(async (req, res, next) => {
+  await request.post(
+    {
+      uri: "https://api.upcitemdb.com/prod/trial/lookup",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      gzip: true,
+      body: '{ "upc": "4002293401102" }',
+    },
+    function (err, resp, body) {
+      console.log(
+        "server encoded the data as: " +
+          (resp.headers["content-encoding"] || "identity")
+      );
+      console.log("the decoded data is: " + body);
+      res.status(201).json({
+        success: true,
+        message: "Your Product is created",
+        body:JSON.parse(body),
+      });
+    }
+  );
 });
 
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
