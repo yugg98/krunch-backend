@@ -109,6 +109,7 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
+  console.log(req.body.qr)
   await request.post(
     {
       uri: "https://api.upcitemdb.com/prod/trial/lookup",
@@ -116,7 +117,7 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
         "Content-Type": "application/json",
       },
       gzip: true,
-      body: { upc: req.body.qr },
+      body: JSON.stringify({ upc: req.body.qr }),
     },
     function (err, resp, body) {
       console.log(
@@ -126,7 +127,6 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
       console.log("the decoded data is: " + body);
       res.status(201).json({
         success: true,
-        message: "Your Product is created",
         body: JSON.parse(body).items[0],
       });
     }
