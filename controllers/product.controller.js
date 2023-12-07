@@ -84,6 +84,30 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     product,
   });
 });
+exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
+ 
+
+  const { name, liked, category, location, locationname,images } = req.body;
+  const product = await productdb.create({
+    name,
+    user_id: req.user._id,
+    latitude: location.latitude,
+    longitude: location.longitude,
+    liked,
+    image: {
+      public_id: 0,
+      url: images,
+    },
+    category,
+    locationname: locationname,
+  });
+  console.log(product, "hello");
+  res.status(201).json({
+    success: true,
+    message: "Your Product is created",
+    product,
+  });
+});
 
 exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
   await request.post(
