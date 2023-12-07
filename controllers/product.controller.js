@@ -85,9 +85,8 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   });
 });
 exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
- 
-
-  const { name, liked, category, location, locationname,images } = req.body;
+  const { name, liked, category, location, locationname, images } = req.body;
+  console.log(name, liked, category, location, locationname, images)
   const product = await productdb.create({
     name,
     user_id: req.user._id,
@@ -101,7 +100,7 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
     category,
     locationname: locationname,
   });
-  console.log(product, "hello");
+  console.log(product)
   res.status(201).json({
     success: true,
     message: "Your Product is created",
@@ -117,7 +116,7 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
         "Content-Type": "application/json",
       },
       gzip: true,
-      body: '{ "upc": "4002293401102" }',
+      body: { upc: req.body.qr },
     },
     function (err, resp, body) {
       console.log(
@@ -128,7 +127,7 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
       res.status(201).json({
         success: true,
         message: "Your Product is created",
-        body:JSON.parse(body).items[0],
+        body: JSON.parse(body).items[0],
       });
     }
   );
