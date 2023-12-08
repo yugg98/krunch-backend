@@ -62,7 +62,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     return next(error);
   }
 
-  const { name, liked, category, location, locationname } = req.body;
+  const { name, liked, category, location, locationname,description } = req.body;
   console.log(name, liked, category, location, locationname);
   const product = await productdb.create({
     name,
@@ -70,12 +70,13 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     latitude: location.latitude,
     longitude: location.longitude,
     liked,
+    description:description,
     image: {
       public_id: myCloud.public_id,
       url: myCloud.secure_url,
     },
     category,
-    locationname: locationname,
+    locationname,
   });
   console.log(product, "hello");
   res.status(201).json({
@@ -85,14 +86,14 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   });
 });
 exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
-  const { name, liked, category, location, locationname, images } = req.body;
-  console.log(name, liked, category, location, locationname, images)
+  const { name, liked, category, location, locationname, images,description } = req.body;
   const product = await productdb.create({
     name,
     user_id: req.user._id,
     latitude: location.latitude,
     longitude: location.longitude,
     liked,
+    description:description,
     image: {
       public_id: 0,
       url: images,

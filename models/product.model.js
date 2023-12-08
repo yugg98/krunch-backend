@@ -23,6 +23,8 @@ const productSchema = new mongoose.Schema({
   },
   latitude: String,
   longitude: String,
+  locationname: String,
+
   liked: {
     type: Boolean,
     default: false, // Default value if not provided
