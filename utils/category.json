@@ -1,12 +1,37 @@
 [
-    { "key": 1, "value": "Food","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
-    { "key": 2, "value": "Groceries","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
-    { "key": 3, "value": "Beverages","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
-    { "key": 4, "value": "Personal Care","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
-    { "key": 5, "value": "Home Goods","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
-    { "key": 6, "value": "Apparel","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
-    { "key": 7, "value": "General","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" }
-  ]
-
-
-  
+  {
+    "key": 1,
+    "value": "General",
+    "img": "https://res.cloudinary.com/yug/image/upload/v1702050956/xurzds4jsvnwezmxtg1m.svg"
+  },
+  {
+    "key": 1,
+    "value": "Food",
+    "img": "https://res.cloudinary.com/yug/image/upload/v1702050956/zx8zneqrpcgdhzyrljqh.svg"
+  },
+  {
+    "key": 2,
+    "value": "Groceries",
+    "img": "https://res.cloudinary.com/yug/image/upload/v1702050956/gz3gtrfoazfzhvtmy0jc.svg"
+  },
+  {
+    "key": 3,
+    "value": "Beverages",
+    "img": "https://res.cloudinary.com/yug/image/upload/v1702050955/sa2bwnyurtov36cjlgxf.svg"
+  },
+  {
+    "key": 4,
+    "value": "Personal Care",
+    "img": "https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg"
+  },
+  {
+    "key": 5,
+    "value": "Home Goods",
+    "img": "https://res.cloudinary.com/yug/image/upload/v1702050956/toakdmg9jhdz0garjhlh.svg"
+  },
+  {
+    "key": 6,
+    "value": "Apparel",
+    "img": "https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg"
+  }
+]
