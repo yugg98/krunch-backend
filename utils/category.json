@@ -1,10 +1,12 @@
 [
-    { "key": 1, "value": "Food" },
-    { "key": 2, "value": "Groceries" },
-    { "key": 3, "value": "Beverages" },
-    { "key": 4, "value": "Personal Care" },
-    { "key": 5, "value": "Home Goods" },
-    { "key": 6, "value": "Apparel" },
-    { "key": 7, "value": "General" }
+    { "key": 1, "value": "Food","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
+    { "key": 2, "value": "Groceries","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
+    { "key": 3, "value": "Beverages","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
+    { "key": 4, "value": "Personal Care","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
+    { "key": 5, "value": "Home Goods","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
+    { "key": 6, "value": "Apparel","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" },
+    { "key": 7, "value": "General","img":"https://res.cloudinary.com/yug/image/upload/v1702050957/qc4asvw6p9o3svwjye2q.svg" }
   ]
+
+
   
