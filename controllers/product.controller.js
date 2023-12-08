@@ -63,7 +63,6 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   }
 
   const { name, liked, category, location, locationname,description } = req.body;
-  console.log(name, liked, category, location, locationname);
   const product = await productdb.create({
     name,
     user_id: req.user._id,
