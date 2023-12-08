@@ -4,7 +4,8 @@ const {
   resendOTP, 
   verifyOTP,
   registerUserGoogle,
-  addName
+  addName,
+  verifyUser
 } = require("../controllers/user.controller");
 const { isAuthenticated } = require("../middleware/auth");
 
@@ -15,6 +16,8 @@ router.post('/user/register', registerUser);
 router.post('/user/registerGoogle', registerUserGoogle);
 
 router.post('/user/addname',isAuthenticated ,addName);
+router.post('/user/verifyUser',isAuthenticated ,verifyUser);
+
 
 // Route to resend OTP
 router.post('/user/resend-otp', resendOTP);

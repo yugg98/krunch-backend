@@ -112,3 +112,10 @@ exports.verifyOTP = catchAsyncErrors(async (req, res) => {
   await userdb.updateOne({ email }, { otp: null, otpExpiry: null });
   sendToken(user, 200, res);
 });
+
+exports.verifyUser = catchAsyncErrors(async (req, res) => {
+  res.status(200).json({
+    message:"User Exists",
+    user:req.user
+  })
+})
