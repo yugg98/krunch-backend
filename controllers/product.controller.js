@@ -166,6 +166,10 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
 
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await productdb.findById(req.params.id);
+  console.log(product.user_id,req.user._id)
+  if(product.user_id!=req.user._id){
+    res.status(401)
+  }
   if (!product) {
     return res
       .status(404)
@@ -175,7 +179,7 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   // Remove image from Cloudinary
   await cloudinary.v2.uploader.destroy(product.image.public_id);
 
-  await product.remove();
+  await product.deleteOne();
 
   res.status(200).json({ success: true, message: "Product deleted" });
 });

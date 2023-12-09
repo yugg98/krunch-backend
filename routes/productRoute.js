@@ -10,7 +10,7 @@ router.post("/product/create", isAuthenticated, productController.createProduct)
 router.post("/product/get-by-qr", productController.getProductByQr);
 router.post("/product/create-by-qr",isAuthenticated, productController.createProductbyqr);
 
-router.put("/product/update/:id", isAuthenticated, productController.updateProduct);
-router.delete("/product/delete/:id", isAuthenticated, productController.deleteProduct);
+router.post("/product/update/:id", isAuthenticated, productController.updateProduct);
+router.post("/product/delete/:id", isAuthenticated, productController.deleteProduct);
 
 module.exports = router;

@@ -32,10 +32,10 @@ exports.registerUser = catchAsyncErrors(async (req, res) => {
 
 exports.addName = catchAsyncErrors(async (req, res) => {
   const { name } = req.body;
-  const user = await userdb.findByIdAndUpdate(req.user_id,{
+  const user = await userdb.findByIdAndUpdate(req.user._id,{
     name
   });
-
+  console.log(user)
   res.status(200).json({
     message:"Name added successfully",
     user
