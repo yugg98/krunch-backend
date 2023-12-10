@@ -109,7 +109,9 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
-  console.log(req.body.qr)
+  if(!req.body.qr){
+    res.status(400)
+  }
   await request.post(
     {
       uri: "https://api.upcitemdb.com/prod/trial/lookup",
@@ -137,29 +139,26 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
   let product = await productdb.findById(req.params.id);
   if (!product) {
     return res
-      .status(404)
+      .status(400)
       .json({ success: false, message: "Product not found" });
   }
-
-  // If there's a new image, upload it
-  if (req.body.image) {
-    // Remove the old image from Cloudinary
-    await cloudinary.v2.uploader.destroy(product.image.public_id);
-    const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
-      folder: "productimage",
-      quality: 80,
-    });
-
-    req.body.image = {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
-    };
+  const { name, liked, category, locationname,description } = req.body;
+  if(product.user_id!=req.user._id){
+    return res
+    .status(401)
+    .json({ success: false, message: "Product not found" });
   }
+ 
 
-  product = await productdb.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  product = await productdb.findByIdAndUpdate(product._id, {
+    name,
+    liked,
+    description,
+    category,
+    locationname
+  } );
+
+  console.log(product,"final")
 
   res.status(200).json({ success: true, product });
 });
