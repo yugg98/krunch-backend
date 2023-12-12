@@ -137,6 +137,7 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
 
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
   let product = await productdb.findById(req.params.id);
+
   if (!product) {
     return res
       .status(400)
