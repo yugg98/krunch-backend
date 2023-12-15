@@ -1,5 +1,5 @@
 const { Resend } = require("resend");
-const resend = new Resend("re_Ht2Qj2iJ_12uwe5DTdXXv8gJvDgbMoX4b");
+const resend = new Resend("re_LjPX68Ay_6UbwYjZZiH8FwRtckzCHsYKy");
 const userdb = require("../models/user.model");
 const ErrorHandler = require("./errorHander");
 
@@ -27,7 +27,7 @@ exports.handleOtpProcess = async (email,res) => {
   console.log(otp,email);
 
   const response = await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
+    from: "Acme <support@krunchtheapp.com>",
     to: [email],
     subject: "Your One-Time Password",
     html: `<strong>Hello! Your OTP is: ${otp}</strong>`,
