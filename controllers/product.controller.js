@@ -109,7 +109,6 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
     product,
   });
 });
-
 exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
   if (!req.body.qr) {
     return res.status(400).json({
@@ -118,48 +117,41 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
   }
 
   try {
-    request.post(
-      {
-        uri: "https://api.upcitemdb.com/prod/trial/lookup",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        gzip: true,
-        body: JSON.stringify({ upc: req.body.qr }),
-      },
-      function (err, resp, body) {
-        if (err) {
-          console.error("Error during API request:", err);
-          return res.status(500).json({
-            message: "Error during external API request",
-          });
-        }
+    const barcode = req.body.qr;
+    const apiUrl = `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`;
 
-        console.log(
-          "Server encoded the data as: " +
-            (resp.headers["content-encoding"] || "identity")
-        );
-
-        try {
-          const parsedBody = JSON.parse(body);
-          if (parsedBody.items && parsedBody.items.length > 0) {
-            return res.status(200).json({
-              success: true,
-              item: parsedBody.items[0],
-            });
-          } else {
-            return res.status(404).json({
-              message: "No product found for the provided QR code",
-            });
-          }
-        } catch (parseError) {
-          console.error("Error parsing response body:", parseError);
-          return res.status(500).json({
-            message: "Error parsing response from external API",
-          });
-        }
+    request.get(apiUrl, function (err, resp, body) {
+      if (err) {
+        console.error("Error during API request:", err);
+        return res.status(500).json({
+          message: "Error during external API request",
+        });
       }
-    );
+
+      try {
+        const parsedBody = JSON.parse(body);
+        if (parsedBody.status === 1 && parsedBody.product) {
+          const product = parsedBody.product;
+
+          // Creating a response object with only title and image
+          const response = {
+            title: product.product_name, // Assuming 'product_name' is the field for the product's name
+            image: product.image_url, // Assuming 'image_url' is the field for the product's main image
+          };
+
+          return res.status(200).json(response);
+        } else {
+          return res.status(404).json({
+            message: "No product found for the provided QR code",
+          });
+        }
+      } catch (parseError) {
+        console.error("Error parsing response body:", parseError);
+        return res.status(500).json({
+          message: "Error parsing response from external API",
+        });
+      }
+    });
   } catch (e) {
     console.error("Server error:", e);
     res.status(500).json({
@@ -167,6 +159,7 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
     });
   }
 });
+
 
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
   let product = await productdb.findById(req.params.id);
