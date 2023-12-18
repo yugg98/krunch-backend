@@ -62,14 +62,15 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     return next(error);
   }
 
-  const { name, liked, category, location, locationname,description } = req.body;
+  const { name, liked, category, location, locationname, description } =
+    req.body;
   const product = await productdb.create({
     name,
     user_id: req.user._id,
     latitude: location.latitude,
     longitude: location.longitude,
     liked,
-    description:description,
+    description: description,
     image: {
       public_id: myCloud.public_id,
       url: myCloud.secure_url,
@@ -85,14 +86,15 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   });
 });
 exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
-  const { name, liked, category, location, locationname, images,description } = req.body;
+  const { name, liked, category, location, locationname, images, description } =
+    req.body;
   const product = await productdb.create({
     name,
     user_id: req.user._id,
     latitude: location.latitude,
     longitude: location.longitude,
     liked,
-    description:description,
+    description: description,
     image: {
       public_id: 0,
       url: images,
@@ -100,7 +102,7 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
     category,
     locationname: locationname,
   });
-  console.log(product)
+  console.log(product);
   res.status(201).json({
     success: true,
     message: "Your Product is created",
@@ -109,30 +111,61 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
-  if(!req.body.qr){
-    res.status(400)
+  if (!req.body.qr) {
+    return res.status(400).json({
+      message: "QR code is required",
+    });
   }
-  await request.post(
-    {
-      uri: "https://api.upcitemdb.com/prod/trial/lookup",
-      headers: {
-        "Content-Type": "application/json",
+
+  try {
+    request.post(
+      {
+        uri: "https://api.upcitemdb.com/prod/trial/lookup",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        gzip: true,
+        body: JSON.stringify({ upc: req.body.qr }),
       },
-      gzip: true,
-      body: JSON.stringify({ upc: req.body.qr }),
-    },
-    function (err, resp, body) {
-      console.log(
-        "server encoded the data as: " +
-          (resp.headers["content-encoding"] || "identity")
-      );
-      console.log("the decoded data is: " + body);
-      res.status(201).json({
-        success: true,
-        body: JSON.parse(body).items[0],
-      });
-    }
-  );
+      function (err, resp, body) {
+        if (err) {
+          console.error("Error during API request:", err);
+          return res.status(500).json({
+            message: "Error during external API request",
+          });
+        }
+
+        console.log(
+          "Server encoded the data as: " +
+            (resp.headers["content-encoding"] || "identity")
+        );
+
+        try {
+          const parsedBody = JSON.parse(body);
+          if (parsedBody.items && parsedBody.items.length > 0) {
+            return res.status(200).json({
+              success: true,
+              item: parsedBody.items[0],
+            });
+          } else {
+            return res.status(404).json({
+              message: "No product found for the provided QR code",
+            });
+          }
+        } catch (parseError) {
+          console.error("Error parsing response body:", parseError);
+          return res.status(500).json({
+            message: "Error parsing response from external API",
+          });
+        }
+      }
+    );
+  } catch (e) {
+    console.error("Server error:", e);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
 });
 
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
@@ -143,32 +176,31 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
       .status(400)
       .json({ success: false, message: "Product not found" });
   }
-  const { name, liked, category, locationname,description } = req.body;
-  if(product.user_id!=req.user._id){
+  const { name, liked, category, locationname, description } = req.body;
+  if (product.user_id != req.user._id) {
     return res
-    .status(401)
-    .json({ success: false, message: "Product not found" });
+      .status(401)
+      .json({ success: false, message: "Product not found" });
   }
- 
 
   product = await productdb.findByIdAndUpdate(product._id, {
     name,
     liked,
     description,
     category,
-    locationname
-  } );
+    locationname,
+  });
 
-  console.log(product,"final")
+  console.log(product, "final");
 
   res.status(200).json({ success: true, product });
 });
 
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await productdb.findById(req.params.id);
-  console.log(product.user_id,req.user._id)
-  if(product.user_id!=req.user._id){
-    res.status(401)
+  console.log(product.user_id, req.user._id);
+  if (product.user_id != req.user._id) {
+    res.status(401);
   }
   if (!product) {
     return res

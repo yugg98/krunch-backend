@@ -12,7 +12,6 @@ exports.registerUser = catchAsyncErrors(async (req, res) => {
 
   if (user) {
     try {
-      await handleOtpProcess(email,res);
       res.status(200).json({ userexist: true, user });
     } catch (error) {
       console.error("Registration Error: ", error);
@@ -21,7 +20,6 @@ exports.registerUser = catchAsyncErrors(async (req, res) => {
   } else {
     try {
       const newUser = await userdb.create({ email });
-      await handleOtpProcess(email,res);
       res.status(200).json({ userexist: false, user: newUser });
     } catch (error) {
       console.error("Registration Error: ", error);
