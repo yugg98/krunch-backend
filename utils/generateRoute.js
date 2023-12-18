@@ -27,10 +27,10 @@ exports.handleOtpProcess = async (email,res) => {
   console.log(otp,email);
 
   const response = await resend.emails.send({
-    from: "Acme <support@krunchtheapp.com>",
+    from: "Krunch <support@krunchtheapp.com>",
     to: [email],
     subject: "Your One-Time Password",
-    html: `<strong>Hello! Your OTP is: ${otp}</strong>`,
+    html: `<p>To verify your identity, please use the below one-time passcode</p><br/><h1><strong> ${otp}</strong></h1><p>Thank you for using Krunch</p>`,
   });
   console.log(response)
   // Update the user record with the new otp and otpExpiry
