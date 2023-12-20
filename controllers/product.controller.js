@@ -5,7 +5,8 @@ const categories = require("../utils/category.json");
 const request = require("request");
 
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await productdb.find({ user_id: req.user._id,createdAt:-1 });
+  const products = await productdb.find({ user_id: req.user._id }).sort({ createdAt: -1 });
+
   res.status(200).json({
     success: true,
     count: products.length,
