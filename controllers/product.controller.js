@@ -5,7 +5,9 @@ const categories = require("../utils/category.json");
 const request = require("request");
 
 exports.getProducts = catchAsyncErrors(async (req, res, next) => {
-  const products = await productdb.find({ user_id: req.user._id }).sort({ createdAt: -1 });
+  const products = await productdb
+    .find({ user_id: req.user._id })
+    .sort({ createdAt: -1 });
 
   res.status(200).json({
     success: true,
@@ -110,56 +112,59 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
     product,
   });
 });
+const axios = require('axios');
+
 exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
   if (!req.body.qr) {
     return res.status(400).json({
       message: "QR code is required",
     });
   }
+  const barcode = req.body.qr;
 
+  const openFoodFactsApiUrl = `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`;
   try {
-    const barcode = req.body.qr;
-    const apiUrl = `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`;
+    const response = await axios.get(openFoodFactsApiUrl);
 
-    request.get(apiUrl, function (err, resp, body) {
-      if (err) {
-        console.error("Error during API request:", err);
-        return res.status(500).json({
-          message: "Error during external API request",
-        });
-      }
-
+    if (response.data.status === 1 && response.data.product) {
+      const product = response.data.product;
+      const productResponse = {
+        title: product.product_name,
+        image: product.image_url,
+      };
+      console.log(product)
+      return res.status(200).json({
+        ...productResponse,
+      });
+    } else {
+      return res.status(404).json({
+        message: "No product found for the provided QR code",
+      });
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 404) {
+      // If the first API returns 404, try the second API
+      const barcodeLookupApiUrl = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=YOUR_API_KEY`;
+      console.log(barcodeLookupApiUrl)
       try {
-        const parsedBody = JSON.parse(body);
-        if (parsedBody.status === 1 && parsedBody.product) {
-          const product = parsedBody.product;
-
-          // Creating a response object with only title and image
-          const response = {
-            title: product.product_name, // Assuming 'product_name' is the field for the product's name
-            image: product.image_url, // Assuming 'image_url' is the field for the product's main image
-          };
-
-          return res.status(200).json(response);
-        } else {
-          return res.status(404).json({
-            message: "No product found for the provided QR code",
-          });
-        }
-      } catch (parseError) {
-        console.error("Error parsing response body:", parseError);
+        const barcodeResponse = await axios.get(barcodeLookupApiUrl);
+        // Process and send response based on the BarcodeLookup API response
+        // ...
+      } catch (barcodeError) {
+        console.error("Error during BarcodeLookup API request:", barcodeError);
         return res.status(500).json({
-          message: "Error parsing response from external API",
+          message: "Error during BarcodeLookup API request",
         });
       }
-    });
-  } catch (e) {
-    console.error("Server error:", e);
-    res.status(500).json({
-      message: "Internal Server Error",
-    });
+    } else {
+      console.error("Error during OpenFoodFacts API request:", error);
+      return res.status(500).json({
+        message: "Error during external API request",
+      });
+    }
   }
 });
+
 
 
 exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
