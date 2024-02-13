@@ -1,5 +1,5 @@
 const { Resend } = require("resend");
-const resend = new Resend("re_LjPX68Ay_6UbwYjZZiH8FwRtckzCHsYKy");
+const resend = new Resend("re_BX1z84Kd_KKGozemANs8aYnCLNi5o35Pz");
 const userdb = require("../models/user.model");
 const ErrorHandler = require("./errorHander");
 
@@ -27,7 +27,7 @@ exports.handleOtpProcess = async (email,res) => {
   console.log(otp,email);
 
   const response = await resend.emails.send({
-    from: "Krunch <support@krunchtheapp.com>",
+    from: "Krunch <support@whatiffounders.com>",
     to: [email],
     subject: "Your One-Time Password",
     html: `<p>To verify your identity, please use the below one-time passcode</p><br/><h1><strong> ${otp}</strong></h1><p>Thank you for using Krunch</p>`,
