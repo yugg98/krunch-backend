@@ -28,7 +28,7 @@ exports.handleOtpProcess = async (email,res) => {
 
   (async function () {
     const { data, error } = await resend.emails.send({
-      from: "Yug <support@chrysuscapital.in>",
+      from: "Krunch <support@chrysuscapital.in>",
       to: [user.email],
       subject: "Your One-Time Password",
       html: `<p>To verify your identity, please use the below one-time passcode</p><br/><h1><strong> ${otp}</strong></h1><p>Thank you for using Krunch</p>`,

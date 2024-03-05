@@ -1,7 +1,7 @@
 [
   {
     "key": 1,
-    "value": "General ",
+    "value": "General",
     "img": "https://res.cloudinary.com/yug/image/upload/v1702050956/xurzds4jsvnwezmxtg1m.svg"
   },
   {
@@ -16,7 +16,7 @@
   },
   {
     "key": 3,
-    "value": "Beverage ",
+    "value": "Beverage",
     "img": "https://res.cloudinary.com/yug/image/upload/v1702050955/sa2bwnyurtov36cjlgxf.svg"
   },
   {
@@ -31,7 +31,7 @@
   },
   {
     "key": 6,
-    "value": "Apparel ",
+    "value": "Apparel",
     "img": "https://res.cloudinary.com/yug/image/upload/v1702386800/m5frh9hcz6oynu6vcnrb.svg"
   }
 ]
