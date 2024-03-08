@@ -144,10 +144,17 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
   } catch (error) {
     if (error.response && error.response.status === 404) {
       // If the first API returns 404, try the second API
-      const barcodeLookupApiUrl = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=YOUR_API_KEY`;
+      const barcodeLookupApiUrl = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=72tc619c6up0mw5lvfhc47cha5otoj`;
       console.log(barcodeLookupApiUrl)
       try {
         const barcodeResponse = await axios.get(barcodeLookupApiUrl);
+        const productResponse = {
+          title: barcodeResponse.products[0].title,
+          image: barcodeResponse.products[0].images[0],
+        };
+        return res.status(200).json({
+          ...productResponse,
+        });
         // Process and send response based on the BarcodeLookup API response
         // ...
       } catch (barcodeError) {
