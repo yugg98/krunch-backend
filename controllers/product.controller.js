@@ -61,12 +61,12 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error);
     return next(error);
   }
-
+  console.log(myCloud)
   const { name, liked, category, location, locationname, description } =
     req.body;
+    console.log(req.body)
   const product = await productdb.create({
     name,
     user_id: req.user._id,
@@ -81,7 +81,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     category,
     locationname,
   });
-  console.log(product, "hello");
+  console.log(productdb)
   res.status(201).json({
     success: true,
     message: "Your Product is created",
@@ -105,7 +105,6 @@ exports.createProductbyqr = catchAsyncErrors(async (req, res, next) => {
     category,
     locationname: locationname,
   });
-  console.log(product);
   res.status(201).json({
     success: true,
     message: "Your Product is created",
@@ -132,7 +131,6 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
         title: product.product_name,
         image: product.image_url,
       };
-      console.log(product)
       return res.status(200).json({
         ...productResponse,
       });
@@ -145,7 +143,6 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
     if (error.response && error.response.status === 404) {
       // If the first API returns 404, try the second API
       const barcodeLookupApiUrl = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=72tc619c6up0mw5lvfhc47cha5otoj`;
-      console.log(barcodeLookupApiUrl)
       try {
         const barcodeResponse = await axios.get(barcodeLookupApiUrl);
         const productResponse = {
@@ -197,14 +194,12 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     locationname,
   });
 
-  console.log(product, "final");
 
   res.status(200).json({ success: true, product });
 });
 
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   const product = await productdb.findById(req.params.id);
-  console.log(product.user_id, req.user._id);
   if (product.user_id != req.user._id) {
     res.status(401);
   }
