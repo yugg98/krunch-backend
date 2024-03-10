@@ -135,25 +135,26 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
         ...productResponse,
       });
     } else {
-      return res.status(404).json({
-        message: "No product found for the provided QR code",
-      });
+      throw new Error('Product not found in OpenFoodFacts');
     }
   } catch (error) {
-    if (error.response && error.response.status === 404) {
-      // If the first API returns 404, try the second API
+    if (error.response && error.response.status === 404 || error.message === 'Product not found in OpenFoodFacts') {
+      // If the first API returns 404 or no product found, try the second API
       const barcodeLookupApiUrl = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=72tc619c6up0mw5lvfhc47cha5otoj`;
       try {
         const barcodeResponse = await axios.get(barcodeLookupApiUrl);
-        const productResponse = {
-          title: barcodeResponse.products[0].title,
-          image: barcodeResponse.products[0].images[0],
-        };
-        return res.status(200).json({
-          ...productResponse,
-        });
-        // Process and send response based on the BarcodeLookup API response
-        // ...
+        if (barcodeResponse.data.products && barcodeResponse.data.products.length > 0) {
+          const productResponse = {
+            title: barcodeResponse.data.products[0].title,
+            image: barcodeResponse.data.products[0].images[0],
+          };
+          console.log(productResponse)
+          return res.status(200).json({
+            ...productResponse,
+          });
+        } else {
+          throw new Error('Product not found in BarcodeLookup');
+        }
       } catch (barcodeError) {
         console.error("Error during BarcodeLookup API request:", barcodeError);
         return res.status(500).json({
@@ -168,6 +169,7 @@ exports.getProductByQr = catchAsyncErrors(async (req, res, next) => {
     }
   }
 });
+
 
 
 
